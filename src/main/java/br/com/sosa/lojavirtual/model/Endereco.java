@@ -1,18 +1,42 @@
 package br.com.sosa.lojavirtual.model;
 
+import br.com.sosa.lojavirtual.enums.TipoEndereco;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "marca_produto")
-@SequenceGenerator(name = "seq_marca_produto", sequenceName = "seq_marca_produto", allocationSize = 1, initialValue = 1)
-public class MarcaProduto implements Serializable {
+@Table(name = "endereco")
+@SequenceGenerator(name = "seq_endereco", sequenceName = "seq_endereco", allocationSize = 1, initialValue = 1)
+public class Endereco implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_marca_produto")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_endereco")
     private Long id;
-    private String nomeDesc;
+
+    private String ruaLogra;
+    private String cep;
+    private String numero;
+    private String complemento;
+    private String bairro;
+    private String uf;
+    private String cidade;
+
+    @ManyToOne(targetEntity = Pessoa.class)
+    @JoinColumn(name = "pessoa_id", nullable = false,
+            foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "pessoa_fk"))
+    private Pessoa pessoa;
+    @Enumerated(EnumType.STRING)
+    private TipoEndereco tipoEndereco;
+
+    public TipoEndereco getTipoEndereco() {
+        return tipoEndereco;
+    }
+
+    public void setTipoEndereco(TipoEndereco tipoEndereco) {
+        this.tipoEndereco = tipoEndereco;
+    }
 
     public Long getId() {
         return id;
@@ -22,12 +46,68 @@ public class MarcaProduto implements Serializable {
         this.id = id;
     }
 
-    public String getNomeDesc() {
-        return nomeDesc;
+    public String getRuaLogra() {
+        return ruaLogra;
     }
 
-    public void setNomeDesc(String nomeDesc) {
-        this.nomeDesc = nomeDesc;
+    public void setRuaLogra(String ruaLogra) {
+        this.ruaLogra = ruaLogra;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+
+    public String getComplemento() {
+        return complemento;
+    }
+
+    public void setComplemento(String complemento) {
+        this.complemento = complemento;
+    }
+
+    public String getBairro() {
+        return bairro;
+    }
+
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
+    }
+
+    public String getUf() {
+        return uf;
+    }
+
+    public void setUf(String uf) {
+        this.uf = uf;
+    }
+
+    public String getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }
+
+    public Pessoa getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
     }
 
     @Override
@@ -35,9 +115,9 @@ public class MarcaProduto implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        MarcaProduto that = (MarcaProduto) o;
+        Endereco endereco = (Endereco) o;
 
-        return id != null ? id.equals(that.id) : that.id == null;
+        return id != null ? id.equals(endereco.id) : endereco.id == null;
     }
 
     @Override
