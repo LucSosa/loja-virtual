@@ -12,7 +12,7 @@ public class FormaPagamento implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_conta_receber")
     private Long id;
-
+    @Column(nullable = false)
     private String descricao;
 
     public Long getId() {
