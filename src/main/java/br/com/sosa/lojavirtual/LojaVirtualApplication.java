@@ -2,8 +2,10 @@ package br.com.sosa.lojavirtual;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @SpringBootApplication
+@EntityScan(basePackages = "br.com.sosa.lojavirtual.model")
 public class LojaVirtualApplication {
 
     public static void main(String[] args) {

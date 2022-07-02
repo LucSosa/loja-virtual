@@ -1,12 +1,17 @@
 package br.com.sosa.lojavirtual.enums;
 
-public enum TipoEndereco {
-    COBRANCA("Cobrança"),
-    ENDERECO("Entrega");
+public enum StatusContaPagar {
+    COBRANCA("Pagar"),
+    VENCIDA("Vencida"),
+    ABERTA("Aberta"),
+    QUITADA("Quitada"),
+    ALUGUEL("Aluguel"),
+    FUNCIONARIO("Funcionário"),
+    NEGOCIADA("Renegociada");
 
     private String descricao;
 
-    TipoEndereco(String descricao) {
+    StatusContaPagar(String descricao) {
         this.descricao = descricao;
     }
 
