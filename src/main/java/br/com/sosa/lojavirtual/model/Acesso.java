@@ -1,5 +1,6 @@
 package br.com.sosa.lojavirtual.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -15,7 +16,7 @@ public class Acesso implements GrantedAuthority {
     private Long id;
     @Column(nullable = false)
     private String descricao;
-
+    @JsonIgnore
     @Override
     public String getAuthority() {
         return this.descricao;
