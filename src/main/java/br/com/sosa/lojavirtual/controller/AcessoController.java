@@ -1,5 +1,6 @@
 package br.com.sosa.lojavirtual.controller;
 
+import br.com.sosa.lojavirtual.ExceptionMentoriaJava;
 import br.com.sosa.lojavirtual.model.Acesso;
 import br.com.sosa.lojavirtual.repository.AcessoRepository;
 import br.com.sosa.lojavirtual.service.AcessoService;
@@ -21,7 +22,13 @@ public class AcessoController {
 
     @ResponseBody /* Retorno da API*/
     @PostMapping(value = "**/salvarAcesso") /* Mapeando a url para receber JSON*/
-    public ResponseEntity<Acesso> salvarAcesso(@RequestBody Acesso acesso) {
+    public ResponseEntity<Acesso> salvarAcesso(@RequestBody Acesso acesso) throws ExceptionMentoriaJava {
+        if (acesso.getId() == null) {
+            List<Acesso> acessos = acessoRepository.buscarAcessoDesc(acesso.getDescricao().toUpperCase());
+            if (!acessos.isEmpty()) {
+                throw new ExceptionMentoriaJava("Já existe Acesso com a descrição: " + acesso.getDescricao());
+            }
+        }
         Acesso acessoSalvo = acessoService.save(acesso);
         return new ResponseEntity<Acesso>(acessoSalvo, HttpStatus.OK);
     }
@@ -42,15 +49,18 @@ public class AcessoController {
 
     @ResponseBody
     @GetMapping(value = "**/obterAcesso/{id}")
-    public ResponseEntity<Acesso> obterAcesso(@PathVariable("id") Long id) {
-        Acesso acesso = acessoRepository.findById(id).get();
+    public ResponseEntity<Acesso> obterAcesso(@PathVariable("id") Long id) throws Exception {
+        Acesso acesso = acessoRepository.findById(id).orElse(null);
+        if (acesso == null) {
+            throw new Exception("Não encontrou Acesso com código: " + id);
+        }
         return new ResponseEntity<Acesso>(acesso, HttpStatus.OK);
     }
 
     @ResponseBody
     @GetMapping(value = "**/buscarPorDesc/{desc}")
     public ResponseEntity<List<Acesso>> buscarPorDesc(@PathVariable("desc") String desc) {
-        List<Acesso> acesso = acessoRepository.buscarAcessoDesc(desc);
+        List<Acesso> acesso = acessoRepository.buscarAcessoDesc(desc.toUpperCase());
         return new ResponseEntity<List<Acesso>>(acesso, HttpStatus.OK);
     }
 }

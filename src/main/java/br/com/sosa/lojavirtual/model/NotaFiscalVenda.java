@@ -6,7 +6,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "nota_fiscal_venda")
 @SequenceGenerator(name = "seq_nota_fiscal_venda", sequenceName = "seq_nota_fiscal_venda", allocationSize = 1, initialValue = 1)
-public class NotaFiscalVenda  implements Serializable {
+public class NotaFiscalVenda implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -27,6 +27,19 @@ public class NotaFiscalVenda  implements Serializable {
     @JoinColumn(name = "venda_compra_loja_virt_id", nullable = false,
             foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "venda_compra_loja_virt_fk"))
     private VendaCompraLojaVirtual vendaCompraLojaVirtual;
+
+    @ManyToOne(targetEntity = Pessoa.class)
+    @JoinColumn(name = "empresa_id", nullable = false,
+            foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_fk"))
+    private Pessoa empresa;
+
+    public Pessoa getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Pessoa empresa) {
+        this.empresa = empresa;
+    }
 
     public VendaCompraLojaVirtual getVendaCompraLojaVirtual() {
         return vendaCompraLojaVirtual;

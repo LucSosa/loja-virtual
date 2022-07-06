@@ -20,6 +20,15 @@ import java.util.List;
 @RestControllerAdvice
 @ControllerAdvice
 public class ControleExcecoes extends ResponseEntityExceptionHandler {
+    @ExceptionHandler(ExceptionMentoriaJava.class)
+    public ResponseEntity<Object> handleExceptionCustom(ExceptionMentoriaJava ex) {
+        ObjetoErroDTO objetoErroDTO = new ObjetoErroDTO();
+        objetoErroDTO.setError(ex.getMessage());
+        objetoErroDTO.setCode(HttpStatus.OK.toString());
+
+        return new ResponseEntity<Object>(objetoErroDTO, HttpStatus.OK);
+    }
+
     /*Captura exeções do projeto*/
     @ExceptionHandler({Exception.class, RuntimeException.class, Throwable.class})
     @Override
@@ -29,7 +38,7 @@ public class ControleExcecoes extends ResponseEntityExceptionHandler {
         ObjetoErroDTO objetoErroDTO = new ObjetoErroDTO();
         String msg = "";
 
-        if (ex instanceof MethodArgumentNotValidException){
+        if (ex instanceof MethodArgumentNotValidException) {
             List<ObjectError> list = ((MethodArgumentNotValidException) ex).getBindingResult().getAllErrors();
 
             for (ObjectError objectError : list) {
@@ -53,11 +62,11 @@ public class ControleExcecoes extends ResponseEntityExceptionHandler {
         ObjetoErroDTO objetoErroDTO = new ObjetoErroDTO();
         String msg = "";
 
-        if (ex instanceof SQLException){
+        if (ex instanceof SQLException) {
             msg = "Erro de SQL do Banco: " + ((SQLException) ex).getCause().getCause().getMessage();
-        } else if (ex instanceof DataIntegrityViolationException){
+        } else if (ex instanceof DataIntegrityViolationException) {
             msg = "Erro de chave estrangeira: " + ((DataIntegrityViolationException) ex).getCause().getCause().getMessage();
-        } else if (ex instanceof ConstraintViolationException){
+        } else if (ex instanceof ConstraintViolationException) {
             msg = "Erro de integridade no Banco: " + ((ConstraintViolationException) ex).getCause().getCause().getMessage();
         } else {
             msg = ex.getMessage();
